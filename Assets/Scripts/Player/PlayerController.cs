@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
 [Header("Control")]
+    [SerializeField] private Animation m_anime;
     [SerializeField] private PlayerInput input;
     [SerializeField] private float speed = 2;
     [SerializeField] private float lerpSpeed = 10;
@@ -54,6 +55,17 @@ public class PlayerController : MonoBehaviour
     }
     public void DeactiveRender()=>playerRender.enabled = false;
     public void ActiveRender()=>playerRender.enabled = true;
+    public void ResetPlayer()
+    {
+        input.enabled = false;
+        transform.position = Vector3.zero;
+        StartCoroutine(coroutineResetPlayer());
+    }
+    public void DefeatTarget()
+    {
+        input.enabled = false;
+        StartCoroutine(coroutineStunPlayer());
+    }
 
 #region Player Input
     void OnPointerMove(InputValue value)
@@ -77,5 +89,19 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(hitCooldown);
         playerRender.color = originalColor;
         cooling = false;
+    }
+    IEnumerator coroutineResetPlayer()
+    {
+        yield return new WaitForSeconds(2.5f);
+        ActiveRender();
+        m_anime.Play();
+        yield return new WaitForSeconds(0.5f);
+        input.enabled = true;
+    }
+    IEnumerator coroutineStunPlayer()
+    {
+        ActiveRender();
+        yield return new WaitForSeconds(0.5f);
+        input.enabled = true;
     }
 }

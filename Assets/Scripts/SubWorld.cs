@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class SubWorld : MonoBehaviour
@@ -37,6 +38,11 @@ public class SubWorld : MonoBehaviour
     }
     public void Explode()
     {
-        window.Explode();
+        window.ExplodeWindow();
+    }
+    public void OnDefeat()
+    {
+        background.DOColor(Color.white, 0.1f);
+        playerDummy.DefeatTarget();
     }
 }

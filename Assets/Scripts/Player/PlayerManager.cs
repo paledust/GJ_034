@@ -24,8 +24,14 @@ public class PlayerManager : Singleton<PlayerManager>
         currentBounds = window.GetBoundry();
         currentPlayer.DeactiveRender();
     }
-    public void ResetBoundry()
+    public void ResetPlayer()
     {
+        currentPlayer.ResetPlayer();
+        currentBounds = new Vector4(40, -40, 30, -30);
+    }
+    public void DefeatTarget()
+    {
+        currentPlayer.DefeatTarget();
         currentBounds = new Vector4(40, -40, 30, -30);
     }
     void FindPlayer(){

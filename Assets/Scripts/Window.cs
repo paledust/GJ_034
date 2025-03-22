@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using System.Collections;
 
 public class Window : MonoBehaviour
 {
@@ -25,10 +26,8 @@ public class Window : MonoBehaviour
             EventHandler.Call_OnEnterWindow(this);
         }
     }
-    public void DisableHitbox()
-    {
-        m_collider.enabled = false;
-    }
+    public void EnableHitbox()=>m_collider.enabled = true;
+    public void DisableHitbox()=>m_collider.enabled = false;
     public void ActivateWindow()
     {
         transform.DOKill();
@@ -46,8 +45,27 @@ public class Window : MonoBehaviour
         boundry.w = transform.localPosition.y - transform.localScale.y*0.5f*scaleFactor;
         return boundry;
     }
-    public void Explode()
+    public void ExplodeWindow()
     {
+        gameObject.SetActive(false); 
         EventHandler.Call_OnWindowExplode(this);
+    }
+    public void DefeatWindow()
+    {
+        subWorld.OnDefeat();
+        StartCoroutine(coroutineDefeatWindow());
+    }
+    IEnumerator coroutineDefeatWindow()
+    {
+        yield return new WaitForSeconds(0.25f);
+        Vector3 startScale = transform.localScale;
+        Vector3 endSccale = startScale;
+        endSccale.x *= 2;
+        endSccale.y = 0; 
+        yield return new WaitForLoop(0.1f, (t)=>{
+            transform.localScale = Vector3.Lerp(startScale,endSccale,EasingFunc.Easing.CircEaseIn(t));
+        });
+        transform.localScale = endSccale;
+        gameObject.SetActive(false); 
     }
 }

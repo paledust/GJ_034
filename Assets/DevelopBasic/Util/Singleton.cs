@@ -7,7 +7,7 @@ public class Singleton <T> : MonoBehaviour where T:Singleton<T>
     public static T Instance{get{
     //Lazy Initialize
         if(!IsInitialized){
-            instance = FindObjectOfType<T>();
+            instance = FindFirstObjectByType<T>();
         }
         return instance;
     }}

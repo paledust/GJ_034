@@ -6,6 +6,7 @@ public class WindowManager : MonoBehaviour
     [SerializeField] private CameraManager cameraManager;
     [SerializeField] private Color[] windowColorSheet;
     [SerializeField] private List<Window> windowPool;
+    [SerializeField] private Marker[] winMarker;
     [SerializeField] private ParticleSystem p_explode;
 
     private int windowIndex;
@@ -33,24 +34,35 @@ public class WindowManager : MonoBehaviour
         {
             if(activeWindow.CheckTarget())
             {
-                Debug.Log("Has Target");
+                activeWindow.DefeatWindow();
+                foreach(var go in windowPool)
+                {
+                    if(go!=activeWindow)
+                        go.EnableHitbox();
+                }
+                activeWindow = null;
+
+                PlayerManager.Instance.DefeatTarget();
             }
         }
     }
     void OnWindowExplodeHandler(Window window)
     {
-        window.gameObject.SetActive(false);
-
-        PlayerManager.Instance.ResetBoundry();
-        PlayerManager.Instance.currentPlayer.ActiveRender();
         cameraManager.ShakeScreen(0.2f, 5);
+
+        foreach(var go in windowPool)
+        {
+            if(go!=activeWindow)
+                go.EnableHitbox();
+        }
+        activeWindow = null;
 
         p_explode.transform.position = window.transform.position;
         var shapeModule = p_explode.shape;
         shapeModule.scale = window.transform.localScale;
         p_explode.Play();
-    //暂停玩家移动，稍后恢复
 
+        PlayerManager.Instance.ResetPlayer();
     }
     void OnEnterWindowHandler(Window window)
     {
