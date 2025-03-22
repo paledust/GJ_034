@@ -3,28 +3,31 @@ using UnityEngine;
 public class PlayerManager : Singleton<PlayerManager>
 {
     private bool IsInTransition;
-    private PlayerController currentPlayer;
     
+    public PlayerController currentPlayer{get; private set;}
+    public Vector4 currentBounds;
     public bool m_canControl => !IsInTransition;
 
     protected override void Awake(){
         base.Awake();
         
+        FindPlayer();
+        currentBounds = new Vector4(40, -40, 30, -30);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         EventHandler.E_AfterLoadScene += FindPlayer;
-    }
-    void Start(){
-        FindPlayer();
-    }
-    void Update(){
-        if(currentPlayer!=null){
-        }
+        EventHandler.E_OnEnterWindow += OnEnterWindow;
     }
     protected override void OnDestroy()
     {
         base.OnDestroy();
         EventHandler.E_AfterLoadScene -= FindPlayer;
+        EventHandler.E_OnEnterWindow -= OnEnterWindow;
+    }
+    void OnEnterWindow(Window window)
+    {
+        currentBounds = window.GetBoundry();
+        currentPlayer.DeactiveRender();
     }
     void FindPlayer(){
         currentPlayer = FindFirstObjectByType<PlayerController>();

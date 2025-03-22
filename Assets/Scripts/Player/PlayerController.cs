@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using SimpleAudioSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,12 +7,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerInput input;
     [SerializeField] private float speed = 2;
     [SerializeField] private float lerpSpeed = 10;
+    [SerializeField] private SpriteRenderer playerRender;
+[Header("Hit feedback")]
+    [SerializeField] private ParticleSystem p_droplet;
 [Header("Audio")]
     [SerializeField] private AudioSource playerAudio;
 
     private Vector2 direction;
     private Vector2 velocity;
     private Vector2 pointerDelta;
+    private const float BOUND_EXTEND = 1;
+
     void Start()
     {
         direction = Vector2.down;
@@ -31,26 +33,25 @@ public class PlayerController : MonoBehaviour
             direction = Vector2.Lerp(direction, velocity.normalized, Time.deltaTime * lerpSpeed).normalized;
         }
         transform.rotation = Quaternion.Euler(0, 0, -Vector2.SignedAngle(direction, Vector2.down));
-        transform.position = (Vector2)transform.position + velocity * Time.deltaTime;
+        Vector2 pos = (Vector2)transform.position + velocity * Time.deltaTime;
+        if(pos.x>PlayerManager.Instance.currentBounds.x+BOUND_EXTEND)
+            pos.x = PlayerManager.Instance.currentBounds.y;
+        if(pos.x<PlayerManager.Instance.currentBounds.y-BOUND_EXTEND)
+            pos.x = PlayerManager.Instance.currentBounds.x;
+        if(pos.y>PlayerManager.Instance.currentBounds.z+BOUND_EXTEND)
+            pos.y = PlayerManager.Instance.currentBounds.w;
+        if(pos.y<PlayerManager.Instance.currentBounds.w-BOUND_EXTEND)
+            pos.y = PlayerManager.Instance.currentBounds.z;
+        transform.position = pos;
     }
-
-    #region Handle Interactable
-    public void CheckControllable(){
-        if(PlayerManager.Instance.m_canControl){
-            input.ActivateInput();
-            this.enabled = true;
-        }
-        else{
-            this.enabled = false;
-            input.DeactivateInput();
-        }
+    public void DeactiveRender()
+    {
+        playerRender.enabled = false;
     }
-#endregion
 
 #region Player Input
     void OnPointerMove(InputValue value){
         pointerDelta = value.Get<Vector2>();
     }
-    void OnFire(InputValue value){}
 #endregion
 }
