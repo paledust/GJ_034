@@ -19,5 +19,7 @@ public static class EventHandler
     public static void Call_OnHitCircle(Target circle)=>E_OnHitCircle?.Invoke(circle);
     public static event Action<Window> E_OnEnterWindow;
     public static void Call_OnEnterWindow(Window window) => E_OnEnterWindow?.Invoke(window);
+    public static event Action E_OnCheckTarget;
+    public static void Call_OnCheckTarget()=>E_OnCheckTarget?.Invoke();
 #endregion
 }

@@ -13,15 +13,27 @@ public class WindowManager : MonoBehaviour
     {
         EventHandler.E_OnHitCircle += OnHitCircleHandler;
         EventHandler.E_OnEnterWindow += OnEnterWindowHandler;
+        EventHandler.E_OnCheckTarget += OnCheckTarget;
     }
     void OnDisable()
     {
         EventHandler.E_OnHitCircle -= OnHitCircleHandler;
         EventHandler.E_OnEnterWindow -= OnEnterWindowHandler;
+        EventHandler.E_OnCheckTarget -= OnCheckTarget;
     }
     void Start()
     {
         windowIndex = windowPool.Count;
+    }
+    void OnCheckTarget()
+    {
+        if(activeWindow!=null)
+        {
+            if(activeWindow.CheckTarget())
+            {
+
+            }
+        }
     }
     void OnHitCircleHandler(Target circle)
     {

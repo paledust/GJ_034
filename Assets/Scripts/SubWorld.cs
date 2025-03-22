@@ -21,4 +21,12 @@ public class SubWorld : MonoBehaviour
             target.ActivateTarget();
         }
     }
+    public bool CheckTarget()
+    {
+        if(target.hasPlayer)
+        {
+            EventHandler.Call_OnHitCircle(target);
+        }
+        return target.hasPlayer;
+    }
 }

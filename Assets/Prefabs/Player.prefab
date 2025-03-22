@@ -4979,7 +4979,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: 0}
+  m_Actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_NotificationBehavior: 0
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
@@ -5016,7 +5016,7 @@ MonoBehaviour:
   hitColor: {r: 0.72199994, g: 0.21314952, b: 0.18935464, a: 1}
   originalColor: {r: 0.403, g: 0.9946217, b: 1, a: 1}
   p_droplet: {fileID: 4979038411929923754}
-  hitCooldown: 0.05
+  hitCooldown: 0.1
   playerAudio: {fileID: 5865681121717276047}
 --- !u!82 &5865681121717276047
 AudioSource:

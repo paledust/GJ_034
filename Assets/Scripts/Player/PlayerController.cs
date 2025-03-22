@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        velocity = Vector2.Lerp(velocity, pointerDelta * speed, Time.deltaTime * lerpSpeed);
+        velocity = Vector2.Lerp(velocity, pointerDelta * (cooling?0:speed), Time.deltaTime * lerpSpeed);
         if(velocity.sqrMagnitude!=0)
         {
             direction = Vector2.Lerp(direction, velocity.normalized, Time.deltaTime * lerpSpeed).normalized;
@@ -64,6 +64,8 @@ public class PlayerController : MonoBehaviour
     {
         if(!cooling)
         {
+            pointerDelta = Vector2.zero;
+            EventHandler.Call_OnCheckTarget();
             StartCoroutine(coroutineHit());
         }
     }

@@ -17,6 +17,7 @@ public class Target : MonoBehaviour
     [SerializeField] private Color hitColor;
     [SerializeField] private float hitDuration = 0.25f;
 
+    public bool hasPlayer{get; private set;} = false;
     private float stateTimer = 0;
     private Vector3 startScale;
     private Collider2D m_collider;
@@ -27,10 +28,6 @@ public class Target : MonoBehaviour
 
     void Awake()=>m_collider = GetComponent<Collider2D>();
     void Start()=>startScale = transform.localScale;
-    public void ActivateTarget()
-    {
-        ChangeState(TargetState.Activate);
-    }
     void Update()
     {
         switch(state)
@@ -66,14 +63,17 @@ public class Target : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(state == TargetState.Activate && other.tag == Service.PLAYER_TAG)
+        if(other.tag == Service.PLAYER_TAG)
         {
-            m_collider.enabled = false;
-
-            ChangeState(TargetState.Defeat);
-        
-            m_renderer.DOColor(hitColor, hitDuration);
-            EventHandler.Call_OnHitCircle(this);
+            hasPlayer = true;
         }
     }
+    void OnTriggerExit2D(Collider2D other)
+    {   
+        if(other.tag == Service.PLAYER_TAG)
+        {
+            hasPlayer = false;
+        }
+    }
+    public void ActivateTarget()=>ChangeState(TargetState.Activate);
 }

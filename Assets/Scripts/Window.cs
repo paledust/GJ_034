@@ -32,6 +32,7 @@ public class Window : MonoBehaviour
         subWorld.Activate();
         spriteRenderer.sortingOrder = 6;
     }
+    public bool CheckTarget()=>subWorld.CheckTarget();
     public Vector4 GetBoundry()
     {
         Vector4 boundry = Vector4.zero;
