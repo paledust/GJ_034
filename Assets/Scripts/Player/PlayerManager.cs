@@ -2,11 +2,8 @@ using UnityEngine;
 
 public class PlayerManager : Singleton<PlayerManager>
 {
-    private bool IsInTransition;
-    
     public PlayerController currentPlayer{get; private set;}
     public Vector4 currentBounds;
-    public bool m_canControl => !IsInTransition;
 
     protected override void Awake(){
         base.Awake();
@@ -26,6 +23,10 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         currentBounds = window.GetBoundry();
         currentPlayer.DeactiveRender();
+    }
+    public void ResetBoundry()
+    {
+        currentBounds = new Vector4(40, -40, 30, -30);
     }
     void FindPlayer(){
         currentPlayer = FindFirstObjectByType<PlayerController>();

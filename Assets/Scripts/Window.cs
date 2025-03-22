@@ -13,7 +13,11 @@ public class Window : MonoBehaviour
     {
         m_collider = GetComponent<Collider2D>();
     }
-    private void Start()=>originScale = transform.localScale;
+    private void Start()
+    {
+        originScale = transform.localScale;
+        subWorld.LinkWindow(this);
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == Service.PLAYER_TAG)
@@ -41,5 +45,9 @@ public class Window : MonoBehaviour
         boundry.z = transform.localPosition.y + transform.localScale.y*0.5f*scaleFactor;
         boundry.w = transform.localPosition.y - transform.localScale.y*0.5f*scaleFactor;
         return boundry;
+    }
+    public void Explode()
+    {
+        EventHandler.Call_OnWindowExplode(this);
     }
 }

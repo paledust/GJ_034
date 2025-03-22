@@ -3,23 +3,25 @@ using UnityEngine;
 
 public class WindowManager : MonoBehaviour
 {
+    [SerializeField] private CameraManager cameraManager;
     [SerializeField] private Color[] windowColorSheet;
     [SerializeField] private List<Window> windowPool;
+    [SerializeField] private ParticleSystem p_explode;
 
     private int windowIndex;
     private Window activeWindow;
 
     void OnEnable()
     {
-        EventHandler.E_OnHitCircle += OnHitCircleHandler;
         EventHandler.E_OnEnterWindow += OnEnterWindowHandler;
         EventHandler.E_OnCheckTarget += OnCheckTarget;
+        EventHandler.E_OnWindowExplode += OnWindowExplodeHandler;
     }
     void OnDisable()
     {
-        EventHandler.E_OnHitCircle -= OnHitCircleHandler;
         EventHandler.E_OnEnterWindow -= OnEnterWindowHandler;
         EventHandler.E_OnCheckTarget -= OnCheckTarget;
+        EventHandler.E_OnWindowExplode -= OnWindowExplodeHandler;
     }
     void Start()
     {
@@ -31,13 +33,24 @@ public class WindowManager : MonoBehaviour
         {
             if(activeWindow.CheckTarget())
             {
-
+                Debug.Log("Has Target");
             }
         }
     }
-    void OnHitCircleHandler(Target circle)
+    void OnWindowExplodeHandler(Window window)
     {
-        
+        window.gameObject.SetActive(false);
+
+        PlayerManager.Instance.ResetBoundry();
+        PlayerManager.Instance.currentPlayer.ActiveRender();
+        cameraManager.ShakeScreen(0.2f, 5);
+
+        p_explode.transform.position = window.transform.position;
+        var shapeModule = p_explode.shape;
+        shapeModule.scale = window.transform.localScale;
+        p_explode.Play();
+    //暂停玩家移动，稍后恢复
+
     }
     void OnEnterWindowHandler(Window window)
     {
@@ -51,10 +64,6 @@ public class WindowManager : MonoBehaviour
         {
             go.DisableHitbox();
         }
-    }
-    void OnExitWindowHandler()
-    {
-
     }
     GameObject CreateWindow()
     {

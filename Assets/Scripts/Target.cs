@@ -13,11 +13,9 @@ public class Target : MonoBehaviour
     [SerializeField] private SpriteRenderer m_renderer;
     [SerializeField] private Animator m_animator;
     [SerializeField] private TargetState state = TargetState.Idle;
-[Header("Hit Feedback")]
-    [SerializeField] private Color hitColor;
-    [SerializeField] private float hitDuration = 0.25f;
 
     public bool hasPlayer{get; private set;} = false;
+    private SubWorld subWorld;
     private float stateTimer = 0;
     private Vector3 startScale;
     private Collider2D m_collider;
@@ -54,9 +52,11 @@ public class Target : MonoBehaviour
                 m_animator.SetTrigger(ACTIVE_TRIGGER);
                 break;
             case TargetState.Defeat:
+                transform.DOScale(startScale, 0.1f).SetEase(Ease.OutBack);
                 m_animator.SetTrigger(DEFEATE_TRIGGER);
                 break;
             case TargetState.Explode:
+                subWorld.Explode();
                 m_animator.SetTrigger(EXPLODE_TRIGGER);
                 break;
         }
@@ -75,5 +75,7 @@ public class Target : MonoBehaviour
             hasPlayer = false;
         }
     }
+    public void Defeat()=>ChangeState(TargetState.Defeat);
     public void ActivateTarget()=>ChangeState(TargetState.Activate);
+    public void LinkWorld(SubWorld subWorld)=>this.subWorld = subWorld;
 }

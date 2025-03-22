@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 velocity;
     private Vector2 pointerDelta;
     private bool cooling;
+
+    public bool IsCooling=>cooling;
     private const float BOUND_EXTEND = 1;
 
     void Start()
@@ -50,10 +52,8 @@ public class PlayerController : MonoBehaviour
             pos.y = PlayerManager.Instance.currentBounds.z;
         transform.position = pos;
     }
-    public void DeactiveRender()
-    {
-        playerRender.enabled = false;
-    }
+    public void DeactiveRender()=>playerRender.enabled = false;
+    public void ActiveRender()=>playerRender.enabled = true;
 
 #region Player Input
     void OnPointerMove(InputValue value)

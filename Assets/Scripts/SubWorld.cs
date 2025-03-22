@@ -5,12 +5,18 @@ public class SubWorld : MonoBehaviour
     [SerializeField] private SpriteRenderer background;
     [SerializeField] private Target target;
     [SerializeField] private PlayerDummy playerDummy;
+    private Window window;
 
     private bool isActivated = false;
 
     void Start()
     {
         playerDummy.gameObject.SetActive(false);
+        target.LinkWorld(this);
+    }
+    public void LinkWindow(Window window)
+    {
+        this.window = window;
     }
     public void Activate()
     {
@@ -25,8 +31,12 @@ public class SubWorld : MonoBehaviour
     {
         if(target.hasPlayer)
         {
-            EventHandler.Call_OnHitCircle(target);
+            target.Defeat();
         }
         return target.hasPlayer;
+    }
+    public void Explode()
+    {
+        window.Explode();
     }
 }

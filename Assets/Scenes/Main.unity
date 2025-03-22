@@ -179,8 +179,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -857901291
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -469,7 +469,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: 2
-      minScalar: 0.1
+      minScalar: 0.3
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -2217,7 +2217,7 @@ ParticleSystem:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
-          time: 0.16023007
+          time: 0.27394715
           value: 0
           inSlope: 59.697914
           outSlope: 59.697914
@@ -2226,7 +2226,7 @@ ParticleSystem:
           inWeight: 0.33333334
           outWeight: 0.24926987
         - serializedVersion: 3
-          time: 0.18192467
+          time: 0.29564175
           value: 1
           inSlope: 0
           outSlope: 0
@@ -2235,7 +2235,7 @@ ParticleSystem:
           inWeight: 0.33333334
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 0.20232213
+          time: 0.3160392
           value: 0.0072647845
           inSlope: 0
           outSlope: 0
@@ -2244,7 +2244,7 @@ ParticleSystem:
           inWeight: 0.33333334
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 0.44351438
+          time: 0.5572314
           value: 0.0072647845
           inSlope: 0
           outSlope: 0
@@ -2253,7 +2253,7 @@ ParticleSystem:
           inWeight: 0.33333334
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 0.6249362
+          time: 0.7386533
           value: 0.03584706
           inSlope: 0
           outSlope: 0
@@ -5062,7 +5062,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 202023025}
+  m_Father: {fileID: 1239936002}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &202023024
 GameObject:
@@ -5094,7 +5094,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1432032474}
-  - {fileID: 3678580}
   - {fileID: 451719844}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5368,6 +5367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57067bb1f4194d242b616d8741df7f6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraManager: {fileID: 519420034}
   windowColorSheet:
   - {r: 0.19607843, g: 0.08627451, b: 0.3019608, a: 1}
   - {r: 0.24705882, g: 0.08627451, b: 0.3019608, a: 1}
@@ -5380,6 +5380,7 @@ MonoBehaviour:
   - {fileID: 1940848508}
   - {fileID: 1829857433}
   - {fileID: 2026331128}
+  p_explode: {fileID: 3678579}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -5563,6 +5564,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bde3c926eb04df34399c10c5b8a11714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vc_cam: {fileID: 213965964}
 --- !u!1001 &829690370
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5766,6 +5768,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba322e9e8a0dc7e4ca7bacc1beb116fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1239936001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1239936002}
+  m_Layer: 0
+  m_Name: -------VFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1239936002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1239936001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3678580}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1357803652
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6615,4 +6649,5 @@ SceneRoots:
   - {fileID: 1469791650}
   - {fileID: 202023025}
   - {fileID: 846899694}
+  - {fileID: 1239936002}
   - {fileID: 2034831038}
