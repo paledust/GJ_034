@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,14 +9,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float speed = 2;
     [SerializeField] private float lerpSpeed = 10;
     [SerializeField] private SpriteRenderer playerRender;
+    
 [Header("Hit feedback")]
+    [SerializeField] private Color hitColor;
+    [SerializeField] private Color originalColor;
     [SerializeField] private ParticleSystem p_droplet;
+    [SerializeField] private float hitCooldown = 0.05f;
 [Header("Audio")]
     [SerializeField] private AudioSource playerAudio;
 
     private Vector2 direction;
     private Vector2 velocity;
     private Vector2 pointerDelta;
+    private bool cooling;
     private const float BOUND_EXTEND = 1;
 
     void Start()
@@ -50,8 +56,24 @@ public class PlayerController : MonoBehaviour
     }
 
 #region Player Input
-    void OnPointerMove(InputValue value){
+    void OnPointerMove(InputValue value)
+    {
         pointerDelta = value.Get<Vector2>();
     }
+    void OnFire(InputValue value)
+    {
+        if(!cooling)
+        {
+            StartCoroutine(coroutineHit());
+        }
+    }
 #endregion
+    IEnumerator coroutineHit()
+    {
+        cooling = true;
+        playerRender.color = hitColor;
+        yield return new WaitForSeconds(hitCooldown);
+        playerRender.color = originalColor;
+        cooling = false;
+    }
 }

@@ -3,20 +3,34 @@ using DG.Tweening;
 
 public class Window : MonoBehaviour
 {
+    [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private SubWorld subWorld;
     [SerializeField] private float scaleFactor = 1.2f;
     [SerializeField] private float scaleTime = 0.1f;
     private Vector3 originScale;
+    private Collider2D m_collider;
+    void Awake()
+    {
+        m_collider = GetComponent<Collider2D>();
+    }
     private void Start()=>originScale = transform.localScale;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == Service.PLAYER_TAG)
         {
-            transform.DOKill();
-            transform.DOScale(originScale*scaleFactor, scaleTime).SetEase(Ease.OutQuad);
-            subWorld.Activate();
             EventHandler.Call_OnEnterWindow(this);
         }
+    }
+    public void DisableHitbox()
+    {
+        m_collider.enabled = false;
+    }
+    public void ActivateWindow()
+    {
+        transform.DOKill();
+        transform.DOScale(originScale*scaleFactor, scaleTime).SetEase(Ease.OutQuad);
+        subWorld.Activate();
+        spriteRenderer.sortingOrder = 6;
     }
     public Vector4 GetBoundry()
     {

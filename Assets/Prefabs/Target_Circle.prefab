@@ -27,7 +27,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2895809287119039423}
@@ -116,7 +116,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -11.01, y: 9.55, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5668715877306845578}
@@ -173,7 +173,6 @@ MonoBehaviour:
   m_renderer: {fileID: 2655363599354311139}
   m_animator: {fileID: 2475334118935532867}
   state: 0
-  ShakeFreq: 10
   hitColor: {r: 0.403, g: 0.9946217, b: 1, a: 1}
   hitDuration: 0.05
 --- !u!95 &2475334118935532867

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 public static class Service{
     public const string PLAYER_TAG = "Player";
-    public const float MAX_GAME_TIME = 5f;
+    public const float MAX_GAME_TIME = 3f;
 #region HelperFunction
     /// <summary>
     /// Return a list of all active and inactive objects of T type in loaded scenes.

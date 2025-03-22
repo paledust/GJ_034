@@ -16,15 +16,13 @@ public class PlayerManager : Singleton<PlayerManager>
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         EventHandler.E_AfterLoadScene += FindPlayer;
-        EventHandler.E_OnEnterWindow += OnEnterWindow;
     }
     protected override void OnDestroy()
     {
         base.OnDestroy();
         EventHandler.E_AfterLoadScene -= FindPlayer;
-        EventHandler.E_OnEnterWindow -= OnEnterWindow;
     }
-    void OnEnterWindow(Window window)
+    public void MatchWindowBoundry(Window window)
     {
         currentBounds = window.GetBoundry();
         currentPlayer.DeactiveRender();

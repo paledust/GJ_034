@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b698ac3be2c5549a5e13ed07246b7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 5019322111769334005}
   subWorld: {fileID: 0}
   scaleFactor: 1.2
   scaleTime: 0.1

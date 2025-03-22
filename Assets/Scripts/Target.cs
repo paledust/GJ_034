@@ -13,8 +13,6 @@ public class Target : MonoBehaviour
     [SerializeField] private SpriteRenderer m_renderer;
     [SerializeField] private Animator m_animator;
     [SerializeField] private TargetState state = TargetState.Idle;
-[Header("Activate")]
-    [SerializeField] private float ShakeFreq = 10;
 [Header("Hit Feedback")]
     [SerializeField] private Color hitColor;
     [SerializeField] private float hitDuration = 0.25f;
@@ -24,6 +22,8 @@ public class Target : MonoBehaviour
     private Collider2D m_collider;
 
     private const string ACTIVE_TRIGGER = "Active";
+    private const string DEFEATE_TRIGGER = "Defeat";
+    private const string EXPLODE_TRIGGER = "EXPLODE";
 
     void Awake()=>m_collider = GetComponent<Collider2D>();
     void Start()=>startScale = transform.localScale;
@@ -38,10 +38,12 @@ public class Target : MonoBehaviour
             case TargetState.Activate:
                 if(stateTimer >= Service.MAX_GAME_TIME)
                 {
+                    m_collider.enabled = false;
                     ChangeState(TargetState.Explode);
+                    return;
                 }
                 stateTimer += Time.deltaTime;
-                transform.localScale = Vector3.Lerp(startScale, Vector3.zero, stateTimer/Service.MAX_GAME_TIME);
+                transform.localScale = Vector3.Lerp(startScale, Vector3.zero, Mathf.Clamp01(stateTimer/Service.MAX_GAME_TIME));
                 return;
         }
     }
@@ -53,6 +55,12 @@ public class Target : MonoBehaviour
         {
             case TargetState.Activate:
                 m_animator.SetTrigger(ACTIVE_TRIGGER);
+                break;
+            case TargetState.Defeat:
+                m_animator.SetTrigger(DEFEATE_TRIGGER);
+                break;
+            case TargetState.Explode:
+                m_animator.SetTrigger(EXPLODE_TRIGGER);
                 break;
         }
     }

@@ -19,13 +19,30 @@ public class WindowManager : MonoBehaviour
         EventHandler.E_OnHitCircle -= OnHitCircleHandler;
         EventHandler.E_OnEnterWindow -= OnEnterWindowHandler;
     }
+    void Start()
+    {
+        windowIndex = windowPool.Count;
+    }
     void OnHitCircleHandler(Target circle)
     {
-
+        
     }
     void OnEnterWindowHandler(Window window)
     {
-        activeWindow = window;
+        if(activeWindow==null)
+        {
+            activeWindow = window;
+            activeWindow.ActivateWindow();
+            PlayerManager.Instance.MatchWindowBoundry(activeWindow);
+        }
+        foreach(var go in windowPool)
+        {
+            go.DisableHitbox();
+        }
+    }
+    void OnExitWindowHandler()
+    {
+
     }
     GameObject CreateWindow()
     {
