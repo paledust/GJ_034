@@ -125,8 +125,8 @@ public class WindowManager : MonoBehaviour
             var window = windowPool.Find(x=>!x.gameObject.activeSelf);
             window.transform.position = pos;
             window.transform.localScale = scale;
-            window.CompleteReset(GetNewColorFromBase(), 1);
             window.gameObject.SetActive(true);
+            window.CompleteReset(GetNewColorFromBase(), 1);
 
             if(createIndex >= windowPool.Count)
             {

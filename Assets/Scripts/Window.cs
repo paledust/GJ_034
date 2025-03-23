@@ -63,7 +63,7 @@ public class Window : MonoBehaviour
         originScale = transform.localScale;
         subWorld.ResetSubWorld(backColor);
         spriteRenderer.sortingOrder = sort;
-        EnableHitbox();
+        StartCoroutine(CommonCoroutine.delayAction(()=>EnableHitbox(), 0.1f));
     }
     public void DecrementSort()
     {
