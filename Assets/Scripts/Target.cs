@@ -22,11 +22,10 @@ public class Target : MonoBehaviour
 
     public bool hasPlayer{get; private set;} = false;
     public float currentTime => stateTimer;
-    
+
     private const string IDLE_TRIGGER = "Idle";
     private const string ACTIVE_TRIGGER = "Active";
     private const string DEFEATE_TRIGGER = "Defeat";
-    private const string EXPLODE_TRIGGER = "EXPLODE";
 
     void Awake(){
         m_collider = GetComponent<Collider2D>();
@@ -68,7 +67,6 @@ public class Target : MonoBehaviour
                     break;
                 case TargetState.Explode:
                     subWorld.Explode();
-                    m_animator.SetTrigger(EXPLODE_TRIGGER);
                     break;
             }
             stateTimer = 0;

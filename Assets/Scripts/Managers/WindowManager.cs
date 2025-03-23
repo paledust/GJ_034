@@ -3,6 +3,13 @@ using UnityEngine;
 
 public class WindowManager : MonoBehaviour
 {
+    public enum WorldType
+    {
+        Single,
+        Mirror,
+        Wave,
+
+    }
     [SerializeField] private CameraManager cameraManager;
     [SerializeField] private Color baseColor;
     [SerializeField] private List<Window> windowPool;
@@ -59,7 +66,8 @@ public class WindowManager : MonoBehaviour
                     int need = 5-count;
                     for(int i=0; i<need; i++)
                     {
-                        CreateRandomWindow();
+                        if(i==0) CreateRandomWindow(0.01f);
+                        else CreateRandomWindow(Random.Range(0.4f, 1f));
                         count ++;
                     }
                 }
@@ -99,18 +107,18 @@ public class WindowManager : MonoBehaviour
         int need = 5-count;
         for(int i=0; i<need; i++)
         {
-            CreateRandomWindow();
+            CreateRandomWindow(Random.Range(0.4f, 1f));
             count ++;
         }
     }
     float RandomSign()=>Random.value>0.5f?1:-1;
-    void CreateRandomWindow()
+    void CreateRandomWindow(float delay)
     {
         Vector2 scale = new Vector2(Random.Range(10f, 20f), Random.Range(10f, 20f));
         Vector2 pos = new Vector2(RandomSign()*Random.Range(6f, 30f), RandomSign()*Random.Range(4f, 21f));
-        CreateWindow(pos, scale);
+        CreateWindow(pos, scale, delay);
     }
-    void CreateWindow(Vector2 pos, Vector2 scale)
+    void CreateWindow(Vector2 pos, Vector2 scale, float delay=0)
     {
         createIndex++;
         StartCoroutine(CommonCoroutine.delayAction(()=>{
@@ -124,7 +132,7 @@ public class WindowManager : MonoBehaviour
             {
                 createIndex = 0;
             }
-        }, Random.Range(0.4f, 1f)));
+        }, delay));
     }
     void OnEnterWindowHandler(Window window)
     {
