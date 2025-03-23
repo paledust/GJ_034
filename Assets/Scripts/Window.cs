@@ -8,8 +8,11 @@ public class Window : MonoBehaviour
     [SerializeField] private SubWorld subWorld;
     [SerializeField] private float scaleFactor = 1.2f;
     [SerializeField] private float scaleTime = 0.1f;
+
+    private int sortIndex;
     private Vector3 originScale;
     private Collider2D m_collider;
+    public int m_sortIndex=>sortIndex;
     void Awake()
     {
         m_collider = GetComponent<Collider2D>();
@@ -17,7 +20,6 @@ public class Window : MonoBehaviour
     private void Start()
     {
         originScale = transform.localScale;
-        subWorld.LinkWindow(this);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -47,13 +49,25 @@ public class Window : MonoBehaviour
     }
     public void ExplodeWindow()
     {
-        gameObject.SetActive(false); 
+        gameObject.SetActive(false);
         EventHandler.Call_OnWindowExplode(this);
     }
     public void DefeatWindow()
     {
         subWorld.OnDefeat();
         StartCoroutine(coroutineDefeatWindow());
+    }
+    public float GetCost()=>subWorld.GetCost();
+    public void CompleteReset(Color backColor, int sort)
+    {
+        originScale = transform.localScale;
+        subWorld.ResetSubWorld(backColor);
+        spriteRenderer.sortingOrder = sort;
+        EnableHitbox();
+    }
+    public void DecrementSort()
+    {
+        spriteRenderer.sortingOrder -= 1;
     }
     IEnumerator coroutineDefeatWindow()
     {

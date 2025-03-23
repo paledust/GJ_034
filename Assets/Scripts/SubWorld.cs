@@ -6,18 +6,12 @@ public class SubWorld : MonoBehaviour
     [SerializeField] private SpriteRenderer background;
     [SerializeField] private Target target;
     [SerializeField] private PlayerDummy playerDummy;
-    private Window window;
-
+    [SerializeField] private Window window;
     private bool isActivated = false;
 
     void Start()
     {
         playerDummy.gameObject.SetActive(false);
-        target.LinkWorld(this);
-    }
-    public void LinkWindow(Window window)
-    {
-        this.window = window;
     }
     public void Activate()
     {
@@ -28,21 +22,28 @@ public class SubWorld : MonoBehaviour
             target.ActivateTarget();
         }
     }
-    public bool CheckTarget()
+    public void Deactivate()
     {
-        if(target.hasPlayer)
-        {
-            target.Defeat();
-        }
-        return target.hasPlayer;
+        isActivated = false;
+        playerDummy.gameObject.SetActive(false);
+        target.ResetTarget();
     }
+    public bool CheckTarget()=>target.hasPlayer;
     public void Explode()
     {
         window.ExplodeWindow();
+        Deactivate();
     }
     public void OnDefeat()
     {
         background.DOColor(Color.white, 0.1f);
         playerDummy.DefeatTarget();
+        target.Defeat();
     }
+    public void ResetSubWorld(Color color){
+        background.color = color;
+        Deactivate();
+    }
+    public float GetCost()=>target.currentTime;
+    public Vector4 GetBounds()=>window.GetBoundry();
 }

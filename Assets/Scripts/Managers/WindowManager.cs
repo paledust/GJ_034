@@ -4,12 +4,13 @@ using UnityEngine;
 public class WindowManager : MonoBehaviour
 {
     [SerializeField] private CameraManager cameraManager;
-    [SerializeField] private Color[] windowColorSheet;
+    [SerializeField] private Color baseColor;
     [SerializeField] private List<Window> windowPool;
-    [SerializeField] private Marker[] winMarker;
     [SerializeField] private ParticleSystem p_explode;
 
-    private int windowIndex;
+    private float lastCost;
+    private int count = 5;
+    private int createIndex;
     private Window activeWindow;
 
     void OnEnable()
@@ -26,7 +27,13 @@ public class WindowManager : MonoBehaviour
     }
     void Start()
     {
-        windowIndex = windowPool.Count;
+        lastCost = Service.MAX_GAME_TIME;
+        createIndex = windowPool.Count;
+        for(int i=0; i<windowPool.Count; i++)
+        {
+            windowPool[i].CompleteReset(GetNewColorFromBase(), i);
+        }
+        createIndex = 0;
     }
     void OnCheckTarget()
     {
@@ -34,6 +41,29 @@ public class WindowManager : MonoBehaviour
         {
             if(activeWindow.CheckTarget())
             {
+                OnDeactivateWindow(activeWindow);
+
+                float cost = activeWindow.GetCost();
+                if(cost < lastCost)
+                {
+                    lastCost = cost;
+                    if(count == 0)
+                    {
+                        //Win the game and show cost
+                    }
+                }
+                else
+                {
+                    lastCost = Service.MAX_GAME_TIME;
+                    //Add windows to five max with delay
+                    int need = 5-count;
+                    for(int i=0; i<need; i++)
+                    {
+                        CreateRandomWindow();
+                        count ++;
+                    }
+                }
+
                 activeWindow.DefeatWindow();
                 foreach(var go in windowPool)
                 {
@@ -48,6 +78,7 @@ public class WindowManager : MonoBehaviour
     }
     void OnWindowExplodeHandler(Window window)
     {
+        OnDeactivateWindow(window);
         cameraManager.ShakeScreen(0.2f, 5);
 
         foreach(var go in windowPool)
@@ -63,6 +94,37 @@ public class WindowManager : MonoBehaviour
         p_explode.Play();
 
         PlayerManager.Instance.ResetPlayer();
+
+        //Add windows to five max with delay
+        int need = 5-count;
+        for(int i=0; i<need; i++)
+        {
+            CreateRandomWindow();
+            count ++;
+        }
+    }
+    float RandomSign()=>Random.value>0.5f?1:-1;
+    void CreateRandomWindow()
+    {
+        Vector2 scale = new Vector2(Random.Range(10f, 20f), Random.Range(10f, 20f));
+        Vector2 pos = new Vector2(RandomSign()*Random.Range(6f, 30f), RandomSign()*Random.Range(4f, 21f));
+        CreateWindow(pos, scale);
+    }
+    void CreateWindow(Vector2 pos, Vector2 scale)
+    {
+        createIndex++;
+        StartCoroutine(CommonCoroutine.delayAction(()=>{
+            var window = windowPool.Find(x=>!x.gameObject.activeSelf);
+            window.transform.position = pos;
+            window.transform.localScale = scale;
+            window.CompleteReset(GetNewColorFromBase(), 1);
+            window.gameObject.SetActive(true);
+
+            if(createIndex >= windowPool.Count)
+            {
+                createIndex = 0;
+            }
+        }, Random.Range(0.4f, 1f)));
     }
     void OnEnterWindowHandler(Window window)
     {
@@ -77,12 +139,33 @@ public class WindowManager : MonoBehaviour
             go.DisableHitbox();
         }
     }
-    GameObject CreateWindow()
+    void OnDeactivateWindow(Window window)
     {
-        return null;
+        count --;
+        foreach(var go in windowPool)
+        {
+            if(go.m_sortIndex>window.m_sortIndex)
+            {
+                go.DecrementSort();
+            }
+        }
     }
-    void RecycleWindow()
+    Color GetNewColorFromBase()
     {
+        float hOffset = RandomSign()*Random.Range(0.05f, 0.1f);
+        float sOffset = Random.Range(-0.1f, 0.1f);
+        float vOffset = Random.Range(-0.05f, 0.05f);
+        
+        Color.RGBToHSV(baseColor, out float h, out float s, out float v);
 
+        h += hOffset;
+        s += sOffset;
+        v += vOffset;
+                        
+        h = Mathf.Clamp01(h);
+        s = Mathf.Clamp01(s);
+        v = Mathf.Clamp01(v);
+
+        return Color.HSVToRGB(h, s, v);
     }
 }

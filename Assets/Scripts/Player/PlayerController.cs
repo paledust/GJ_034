@@ -92,16 +92,16 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator coroutineResetPlayer()
     {
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(1.5f);
         ActiveRender();
         m_anime.Play();
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.4f);
         input.enabled = true;
     }
     IEnumerator coroutineStunPlayer()
     {
         ActiveRender();
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.25f);
         input.enabled = true;
     }
 }
