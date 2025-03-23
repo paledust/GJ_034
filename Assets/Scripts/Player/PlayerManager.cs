@@ -34,7 +34,7 @@ public class PlayerManager : Singleton<PlayerManager>
         currentPlayer.DefeatTarget();
         currentBounds = new Vector4(40, -40, 30, -30);
     }
-    void FindPlayer(){
+    public void FindPlayer(){
         currentPlayer = FindFirstObjectByType<PlayerController>();
     }
 }

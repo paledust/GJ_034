@@ -5012,7 +5012,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_anime: {fileID: 3914763653381674679}
   input: {fileID: 5546340973889576213}
-  speed: 4
+  speed: 8
   lerpSpeed: 15
   playerRender: {fileID: 6493698250288704508}
   hitColor: {r: 0.72199994, g: 0.21314952, b: 0.18935464, a: 1}
@@ -5020,6 +5020,7 @@ MonoBehaviour:
   p_droplet: {fileID: 4979038411929923754}
   hitCooldown: 0.2
   playerAudio: {fileID: 5865681121717276047}
+  click_clip: group_switch
 --- !u!82 &5865681121717276047
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5033,7 +5034,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0

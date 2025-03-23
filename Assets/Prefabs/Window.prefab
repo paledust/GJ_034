@@ -152,6 +152,7 @@ MonoBehaviour:
   subWorld: {fileID: 0}
   scaleFactor: 1.2
   scaleTime: 0.1
+  m_collider: {fileID: 1914904103472374627}
 --- !u!114 &2408740787236700367
 MonoBehaviour:
   m_ObjectHideFlags: 0

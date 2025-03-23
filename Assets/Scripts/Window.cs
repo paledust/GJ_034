@@ -8,15 +8,10 @@ public class Window : MonoBehaviour
     [SerializeField] private SubWorld subWorld;
     [SerializeField] private float scaleFactor = 1.2f;
     [SerializeField] private float scaleTime = 0.1f;
-
+    [SerializeField] private Collider2D m_collider;
     private int sortIndex;
     private Vector3 originScale;
-    private Collider2D m_collider;
     public int m_sortIndex=>sortIndex;
-    void Awake()
-    {
-        m_collider = GetComponent<Collider2D>();
-    }
     private void Start()
     {
         originScale = transform.localScale;
@@ -58,12 +53,15 @@ public class Window : MonoBehaviour
         StartCoroutine(coroutineDefeatWindow());
     }
     public float GetCost()=>subWorld.GetCost();
-    public void CompleteReset(Color backColor, int sort)
+    public void CompleteReset(Color backColor, int sort, WorldType worldType)
     {
         originScale = transform.localScale;
-        subWorld.ResetSubWorld(backColor);
+        subWorld.ResetSubWorld(backColor, worldType);
         spriteRenderer.sortingOrder = sort;
-        StartCoroutine(CommonCoroutine.delayAction(()=>EnableHitbox(), 0.1f));
+        if(!gameObject.activeSelf)
+            EnableHitbox();
+        else
+            StartCoroutine(CommonCoroutine.delayAction(()=>EnableHitbox(), 0.1f));
     }
     public void DecrementSort()
     {

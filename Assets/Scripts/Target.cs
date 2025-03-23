@@ -15,8 +15,14 @@ public class Target : MonoBehaviour
     [SerializeField] private TargetState state = TargetState.Idle;
     [SerializeField] private SubWorld subWorld;
 
+    private float floatFreq = 2;
+    private float floatPhase = 2;
+    private float floatAmp = 1;
+
     private float stateTimer = 0;
-    private Vector3 startScale;
+    private Vector3 startScale = Vector3.one;
+    private Vector3 idlePos;
+    private Vector4 bound;
     private Color startColor;
     private Collider2D m_collider;
 
@@ -30,12 +36,16 @@ public class Target : MonoBehaviour
     void Awake(){
         m_collider = GetComponent<Collider2D>();
         startColor = m_renderer.color;
+        idlePos = transform.localPosition;
     }
-    void Start()=>startScale = transform.localScale;
+    void Start()=>startScale = Vector3.one*2.5f;
     void Update()
     {
         switch(state)
         {
+            case TargetState.Idle:
+                transform.localPosition = idlePos + Vector3.up*Mathf.Sin(Mathf.PI*Time.time*floatFreq + floatPhase)*floatAmp;
+                break;
             case TargetState.Activate:
                 if(stateTimer >= Service.MAX_GAME_TIME)
                 {
@@ -45,8 +55,10 @@ public class Target : MonoBehaviour
                 }
                 stateTimer += Time.deltaTime;
                 transform.localScale = Vector3.Lerp(startScale, Vector3.zero, Mathf.Clamp01(stateTimer/Service.MAX_GAME_TIME));
-                return;
+                break;
         }
+        transform.localPosition = Service.ConstraintInBoundry(transform.localPosition, bound, 1);
+        
     }
     void ChangeState(TargetState newState)
     {
@@ -87,15 +99,27 @@ public class Target : MonoBehaviour
         }
     }
     public void ResetTarget(){
+        floatFreq = Random.Range(0.2f,0.4f);
+        floatPhase = Random.Range(0, Mathf.PI);
+        floatAmp = Random.Range(0.5f,1.5f);
         m_renderer.color = startColor;
-        transform.localScale = startScale;
-        Vector4 bound = subWorld.GetBounds();
+        transform.localScale = Vector3.one*2.5f;
+        bound = subWorld.GetBounds();
         float width = bound.x - bound.y;
         float height = bound.z - bound.w;
         transform.localPosition = new Vector2(Random.Range(bound.y+width*0.25f, bound.x-width*0.25f), Random.Range(bound.w+height*0.25f, bound.z-height*0.25f));
         m_collider.enabled = true;
+        idlePos = transform.localPosition;
         ChangeState(TargetState.Idle);
     }
-    public void Defeat()=>ChangeState(TargetState.Defeat);
+    public void Defeat()
+    {
+        ChangeState(TargetState.Defeat);
+        var behavior = GetComponent<TargetBehavior>();
+        if(behavior!=null)
+        {
+            Destroy(behavior);
+        }
+    }
     public void ActivateTarget()=>ChangeState(TargetState.Activate);
 }

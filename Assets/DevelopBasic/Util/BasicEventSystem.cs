@@ -12,6 +12,8 @@ public static class EventHandler
     public static void Call_OnBeginSave()=>E_OnBeginSave?.Invoke();
     public static event Action E_OnCompleteSave;
     public static void Call_OnCompleteSave()=>E_OnCompleteSave?.Invoke();
+    public static event Action E_OnExitGame;
+    public static void Call_OnExitGame()=>E_OnExitGame?.Invoke();
 #endregion
 
 #region Interaction

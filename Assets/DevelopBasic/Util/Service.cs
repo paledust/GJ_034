@@ -1,9 +1,22 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public static class Service{
     public const string PLAYER_TAG = "Player";
-    public const float MAX_GAME_TIME = 1.5f;
+    public const float MAX_GAME_TIME = 3f;
 #region HelperFunction
+    public static Vector2 ConstraintInBoundry(Vector2 pos, Vector4 bound, float boundExtend)
+    {
+        if(pos.x>bound.x+boundExtend)
+            pos.x = bound.y;
+        if(pos.x<bound.y-boundExtend)
+            pos.x = bound.x;
+        if(pos.y>bound.z+boundExtend)
+            pos.y = bound.w;
+        if(pos.y<bound.w-boundExtend)
+            pos.y = bound.z;
+        return pos;
+    }
     /// <summary>
     /// Return a list of all active and inactive objects of T type in loaded scenes.
     /// </summary>

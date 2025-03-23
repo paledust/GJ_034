@@ -40,8 +40,29 @@ public class SubWorld : MonoBehaviour
         playerDummy.DefeatTarget();
         target.Defeat();
     }
-    public void ResetSubWorld(Color color){
+    public void ResetSubWorld(Color color, WorldType worldType){
+        var targetBehave = target.GetComponent<TargetBehavior>();
+        if(targetBehave!=null)
+        {
+            Destroy(targetBehave);
+        }
+
         background.color = color;
+        switch(worldType)
+        {
+            case WorldType.Dodge:
+                target.gameObject.AddComponent<TargetDodge>();
+                break;
+            case WorldType.Constant:
+                target.gameObject.AddComponent<TargetConstant>();
+                break;
+            case WorldType.Posses:
+                break;
+            case WorldType.Split:
+                break;
+            case WorldType.Idle:
+                break;
+        }
         Deactivate();
     }
     public float GetCost()=>target.currentTime;

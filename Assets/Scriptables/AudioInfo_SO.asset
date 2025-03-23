@@ -13,6 +13,28 @@ MonoBehaviour:
   m_Name: AudioInfo_SO
   m_EditorClassIdentifier: 
   bgm_info_list: []
-  amb_info_list: []
-  sfx_info_list: []
-  sfx_group_info_list: []
+  amb_info_list:
+  - audio_name: amb_roomtone
+    audio_clip: {fileID: 8300000, guid: 9a0e7d150afc67a429b9c68110eb1431, type: 3}
+  sfx_info_list:
+  - audio_name: sfx_enter
+    audio_clip: {fileID: 8300000, guid: e45fd8c954e04994ba592456acab3b09, type: 3}
+  - audio_name: sfx_countdown
+    audio_clip: {fileID: 8300000, guid: 7dfd15de23e9d75498c707fc677a4f95, type: 3}
+  - audio_name: sfx_exit
+    audio_clip: {fileID: 8300000, guid: 6a0f9338d4a1b5f4099279bfd16386e2, type: 3}
+  sfx_group_info_list:
+  - audio_group_name: group_switch
+    audioClips:
+    - {fileID: 8300000, guid: 4c3e5d4e8f4e18d4cb223cd2fc847377, type: 3}
+    - {fileID: 8300000, guid: ef6fba944d16a73479397f61b247b71e, type: 3}
+    - {fileID: 8300000, guid: e6a22f2baaf93df4fac642350595e62c, type: 3}
+  - audio_group_name: group_defeat
+    audioClips:
+    - {fileID: 8300000, guid: f0eb7589d56fff746a7932a8ca53cf66, type: 3}
+    - {fileID: 8300000, guid: 029d7e5c330c8984ab189843142001b2, type: 3}
+  - audio_group_name: group_explode
+    audioClips:
+    - {fileID: 8300000, guid: 63fa02e7395cbf2418ff67fd55f90bb2, type: 3}
+    - {fileID: 8300000, guid: 55b113a0cd446114baaf6fdeba99691c, type: 3}
+    - {fileID: 8300000, guid: cc606621d8242dc4980015522eb5ac80, type: 3}

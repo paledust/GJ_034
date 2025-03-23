@@ -1,4 +1,5 @@
 using System.Collections;
+using SimpleAudioSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float hitCooldown = 0.05f;
 [Header("Audio")]
     [SerializeField] private AudioSource playerAudio;
+    [SerializeField] private string click_clip;
 
     private Vector2 direction;
     private Vector2 velocity;
@@ -25,6 +27,7 @@ public class PlayerController : MonoBehaviour
     private bool cooling;
 
     public bool IsCooling=>cooling;
+    public Vector2 m_velocity=>velocity;
     private const float BOUND_EXTEND = 1;
 
     void Start()
@@ -32,6 +35,7 @@ public class PlayerController : MonoBehaviour
         direction = Vector2.down;
         velocity  = Vector2.zero;
         pointerDelta = Vector2.zero;
+        speed *= (Screen.width+0f)/800f;
     }
     // Update is called once per frame
     void Update()
@@ -43,15 +47,7 @@ public class PlayerController : MonoBehaviour
         }
         transform.rotation = Quaternion.Euler(0, 0, -Vector2.SignedAngle(direction, Vector2.down));
         Vector2 pos = (Vector2)transform.position + velocity * Time.deltaTime;
-        if(pos.x>PlayerManager.Instance.currentBounds.x+BOUND_EXTEND)
-            pos.x = PlayerManager.Instance.currentBounds.y;
-        if(pos.x<PlayerManager.Instance.currentBounds.y-BOUND_EXTEND)
-            pos.x = PlayerManager.Instance.currentBounds.x;
-        if(pos.y>PlayerManager.Instance.currentBounds.z+BOUND_EXTEND)
-            pos.y = PlayerManager.Instance.currentBounds.w;
-        if(pos.y<PlayerManager.Instance.currentBounds.w-BOUND_EXTEND)
-            pos.y = PlayerManager.Instance.currentBounds.z;
-        transform.position = pos;
+        transform.position = Service.ConstraintInBoundry(pos, PlayerManager.Instance.currentBounds, BOUND_EXTEND);
     }
     public void DeactiveRender()=>playerRender.enabled = false;
     public void ActiveRender()=>playerRender.enabled = true;
@@ -76,6 +72,7 @@ public class PlayerController : MonoBehaviour
     {
         if(!cooling)
         {
+            AudioManager.Instance.PlaySoundEffect(playerAudio, click_clip, 1.0f);
             pointerDelta = Vector2.zero;
             EventHandler.Call_OnCheckTarget();
             StartCoroutine(coroutineHit());
@@ -102,6 +99,7 @@ public class PlayerController : MonoBehaviour
     {
         ActiveRender();
         yield return new WaitForSeconds(0.1f);
+        p_droplet.Play();
         input.enabled = true;
     }
 }
