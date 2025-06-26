@@ -19,7 +19,7 @@ public class ExitTrigger : MonoBehaviour
     }
     void CheckExit()
     {
-        if(hasPlayer)
+        if(!hasExit && hasPlayer)
         {
             hasExit = true;
 
@@ -27,7 +27,7 @@ public class ExitTrigger : MonoBehaviour
             EventHandler.Call_OnExitGame();
             renderTrans.DOKill();
             renderTrans.DOScale(250, 1f).SetEase(Ease.OutQuad)
-            .OnComplete(()=>Application.Quit());
+            .OnComplete(ExitExcute);
         }
     }
     void OnTriggerEnter2D(Collider2D other)
@@ -47,5 +47,13 @@ public class ExitTrigger : MonoBehaviour
             renderTrans.DOScale(1, 0.2f);
             hasPlayer = false;
         }
+    }
+    void ExitExcute()
+    {
+    #if UNITY_WEBGL
+        GameManager.Instance.RestartLevel();
+    #else
+        Application.Quit();
+    #endif
     }
 }
